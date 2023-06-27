@@ -13,6 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,13 +27,17 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue
 	private UUID id;
-	private String username;
 	private String name;
 	private String surname;
+	private String username;
 	private String email;
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private Role role;
+	@OneToMany(mappedBy = "user")
+	private List<Alloggio> alloggi;
+	@OneToMany(mappedBy = "user")
+	private List<Prenotazione> prenotazioni;
 
 	public User(String name, String surname, String username, String email, String password) {
 		super();

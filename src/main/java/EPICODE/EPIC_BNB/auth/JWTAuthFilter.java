@@ -38,7 +38,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
 		String username = JWTTools.extractSubject(accessToken);
 		try {
-			User user = usersService.findByUserName(username);
+			User user = usersService.findByUsername(username);
 
 			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
 					user.getAuthorities());

@@ -47,7 +47,7 @@ public class UsersService {
 				.orElseThrow(() -> new NotFoundException("Utete con email:" + email + "non trovato!!"));
 	}
 
-	public User findByUserName(String username) throws NotFoundException {
+	public User findByUsername(String username) throws NotFoundException {
 		return usersRepo.findByUsername(username)
 				.orElseThrow(() -> new NotFoundException("Utete:" + username + "non trovato!!"));
 	}
