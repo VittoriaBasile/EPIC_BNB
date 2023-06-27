@@ -28,21 +28,18 @@ public class UsersController {
 	@Autowired
 	private UsersService usersService;
 
-	// testata OK
 	@GetMapping("")
 	public Page<User> getUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "id") String sortBy) {
 		return usersService.find(page, size, sortBy);
 	}
 
-	// testata OK
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public User saveUser(@RequestBody @Validated UserCreatePayload body) {
 		return usersService.create(body);
 	}
 
-	// testata OK
 	@GetMapping("/{userId}")
 	public User getUser(@PathVariable UUID userId) throws Exception {
 		return usersService.findById(userId);
@@ -54,7 +51,6 @@ public class UsersController {
 		return usersService.findByIdAndUpdate(userId, body);
 	}
 
-	// testata OK
 	@DeleteMapping("/{userId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteUser(@PathVariable UUID userId) throws NotFoundException {

@@ -39,7 +39,7 @@ public class AuthController {
 	public ResponseEntity<AuthenticationSuccessfullPayload> login(@RequestBody UserLoginPayload body)
 			throws NotFoundException {
 
-		User user = usersService.findByUserName(body.getUserName());
+		User user = usersService.findByUserName(body.getUsername());
 
 		String plainPW = body.getPassword();
 		String hashedPW = user.getPassword();

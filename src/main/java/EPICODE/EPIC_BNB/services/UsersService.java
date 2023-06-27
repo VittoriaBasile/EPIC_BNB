@@ -24,7 +24,7 @@ public class UsersService {
 		usersRepo.findByEmail(u.getEmail()).ifPresent(user -> {
 			throw new BadRequestException("Email " + user.getEmail() + " already in use!");
 		});
-		User newUser = new User(u.getName(), u.getSurname(), u.getUserName(), u.getEmail(), u.getPassword());
+		User newUser = new User(u.getName(), u.getSurname(), u.getUsername(), u.getEmail(), u.getPassword());
 		return usersRepo.save(newUser);
 	}
 
@@ -48,7 +48,7 @@ public class UsersService {
 	}
 
 	public User findByUserName(String username) throws NotFoundException {
-		return usersRepo.findByUserName(username)
+		return usersRepo.findByUsername(username)
 				.orElseThrow(() -> new NotFoundException("Utete:" + username + "non trovato!!"));
 	}
 

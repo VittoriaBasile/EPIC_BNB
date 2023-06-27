@@ -12,6 +12,6 @@ import EPICODE.EPIC_BNB.entities.User;
 public interface UsersRepository extends JpaRepository<User, UUID> {
 	Optional<User> findByEmail(String email);
 
-	Optional<User> findByUserName(String userName);
+	Optional<User> findByUsername(String username);
 
 }
