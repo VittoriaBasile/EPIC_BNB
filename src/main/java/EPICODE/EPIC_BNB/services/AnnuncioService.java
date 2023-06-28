@@ -1,5 +1,7 @@
 package EPICODE.EPIC_BNB.services;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,15 @@ public class AnnuncioService {
 		return annunciorepo.findAll(pageable);
 	}
 
+	public List<Annuncio> findAnnuncioByUserId(UUID idUser) {
+		List<Annuncio> annunciPerUser = annunciorepo.findByAlloggioUserId(idUser);
+		if (annunciPerUser.isEmpty())
+			throw new NotFoundException("Non hai ancora pubblicato nessun annuncio");
+		else
+			return annunciPerUser;
+
+	}
+
 	public Annuncio findById(UUID id) throws NotFoundException {
 		return annunciorepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("Annuncio con Id:" + id + "non trovato!!"));
@@ -61,6 +72,14 @@ public class AnnuncioService {
 	public Annuncio findByNome(String nome) throws NotFoundException {
 		return annunciorepo.findByNome(nome)
 				.orElseThrow(() -> new NotFoundException("Annuncio con nome:" + nome + "non trovato!!"));
+	}
+
+	public List<Annuncio> findByFilter(String filter) {
+		List<Annuncio> annunci = annunciorepo.findByFilter(filter);
+		if (annunci.isEmpty()) {
+			throw new NotFoundException("Nessun annuncio trovato");
+		} else
+			return annunci.stream().sorted(Comparator.comparing(Annuncio::getNome)).toList();
 	}
 
 	public Annuncio findByIdAndUpdate(UUID id, Annuncio a) throws NotFoundException {

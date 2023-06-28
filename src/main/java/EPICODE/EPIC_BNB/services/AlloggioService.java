@@ -13,6 +13,7 @@ import EPICODE.EPIC_BNB.entities.Alloggio;
 import EPICODE.EPIC_BNB.entities.Indirizzo;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.AlloggioCreatePayload;
+import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
 import EPICODE.EPIC_BNB.repositories.AlloggioRepository;
 
@@ -63,7 +64,9 @@ public class AlloggioService {
 		found.setTipologia(a.getTipologia());
 		found.setPostiLetto(a.getPostiLetto());
 		found.setImage(a.getImage());
-		found.setUser(userService.findByIdAndUpdate(a.getUser().getId(), a.getUser()));
+		UserCreatePayload userPayload = new UserCreatePayload(a.getUser().getName(), a.getUser().getSurname(),
+				a.getUser().getUsername(), a.getUser().getEmail(), a.getUser().getPassword());
+		found.setUser(userService.findByIdAndUpdate(a.getUser().getId(), userPayload));
 		found.setIndirizzo(indirizzoService.findByIdAndUpdate(a.getIndirizzo().getId(), a.getIndirizzo()));
 		return alloggioRepo.save(found);
 	}

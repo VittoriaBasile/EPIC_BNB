@@ -1,5 +1,6 @@
 package EPICODE.EPIC_BNB.entities;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,7 @@ public class Annuncio {
 	private UUID id;
 	private String nome;
 	private double prezzo;
+	private LocalDate dataInserimento;
 	@OneToOne
 	private Alloggio alloggio;
 	@OneToMany(mappedBy = "annuncio")
@@ -36,6 +38,7 @@ public class Annuncio {
 		this.nome = nome;
 		this.prezzo = prezzo;
 		this.alloggio = alloggio;
+		this.dataInserimento = LocalDate.now();
 	}
 
 }

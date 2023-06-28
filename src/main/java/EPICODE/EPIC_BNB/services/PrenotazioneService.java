@@ -1,5 +1,6 @@
 package EPICODE.EPIC_BNB.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.Prenotazione;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.PrenotazioneCreatePayload;
+import EPICODE.EPIC_BNB.exceptions.BadRequestException;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
 import EPICODE.EPIC_BNB.repositories.PrenotazioneRepository;
 
@@ -28,7 +30,13 @@ public class PrenotazioneService {
 	public Prenotazione create(PrenotazioneCreatePayload p) {
 		User user = usersService.findByEmail(p.getUserEmail());
 		Annuncio annuncio = annuncioService.findByNome(p.getNomeAnnuncio());
+		List<Prenotazione> prenotazioni = prenotazioneRepo.findByDataInizioAndAnnuncio(p.getDataInizio(), annuncio);
+
+		if (!prenotazioni.isEmpty()) {
+			throw new BadRequestException("Impossibile prenotare in questa data, alloggio già prenotato");
+		}
 		Prenotazione newPrenotazione = new Prenotazione(p.getDataInizio(), p.getNumeroOspiti(), user, annuncio);
+
 		return prenotazioneRepo.save(newPrenotazione);
 	}
 
