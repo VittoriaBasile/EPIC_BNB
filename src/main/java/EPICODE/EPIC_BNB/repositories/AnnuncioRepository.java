@@ -15,9 +15,9 @@ import EPICODE.EPIC_BNB.entities.Annuncio;
 public interface AnnuncioRepository extends JpaRepository<Annuncio, UUID> {
 	Optional<Annuncio> findByNome(String nome);
 
-	@Query("SELECT a FROM Annuncio a WHERE a.alloggio.indirizzo.via LIKE '%'||:filter||'%' OR a.alloggio.indirizzo.città LIKE '%'||:filter||'%' OR a.alloggio.indirizzo.regione LIKE '%'||:filter||'%' OR a.alloggio.indirizzo.Stato LIKE '%'||:filter||'%' OR a.nome LIKE '%'||:filter||'%' ")
+	@Query("SELECT a FROM Annuncio a WHERE a.indirizzo.via LIKE '%'||:filter||'%' OR a.indirizzo.città LIKE '%'||:filter||'%' OR a.indirizzo.regione LIKE '%'||:filter||'%' OR a.indirizzo.Stato LIKE '%'||:filter||'%' OR a.nome LIKE '%'||:filter||'%' ")
 	List<Annuncio> findByFilter(@Param("filter") String filter);
 
-	List<Annuncio> findByAlloggioUserId(UUID idUser);
+	List<Annuncio> findByUserId(UUID idUser);
 
 }

@@ -35,7 +35,7 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@OneToMany(mappedBy = "user")
-	private List<Alloggio> alloggi;
+	private List<Annuncio> annuncio;
 	@OneToMany(mappedBy = "user")
 	private List<Prenotazione> prenotazioni;
 

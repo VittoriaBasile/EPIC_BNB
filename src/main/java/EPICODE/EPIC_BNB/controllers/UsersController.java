@@ -1,6 +1,5 @@
 package EPICODE.EPIC_BNB.controllers;
 
-import java.util.Collection;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
-import EPICODE.EPIC_BNB.exceptions.AccessDeniedException;
 import EPICODE.EPIC_BNB.services.UsersService;
 
 @RestController
@@ -46,15 +43,8 @@ public class UsersController {
 //		if (!authorities.contains(new SimpleGrantedAuthority("ADMIN"))) {
 //			throw new UnauthorizedException("Access denied. Only administrators can access this resource.");
 //		} 
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-		boolean isAdmin = authorities.stream().anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
-
-		if (!isAdmin) {
-			throw new AccessDeniedException("Access denied. Only administrators can access this resource.");
-		} else
-			return usersService.find(page, size, sortBy);
+		return usersService.find(page, size, sortBy);
 
 	}
 

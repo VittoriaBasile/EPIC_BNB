@@ -1,5 +1,6 @@
 package EPICODE.EPIC_BNB.services;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,11 +8,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import EPICODE.EPIC_BNB.entities.Role;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
+import EPICODE.EPIC_BNB.exceptions.AccessDeniedException;
 import EPICODE.EPIC_BNB.exceptions.BadRequestException;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
 import EPICODE.EPIC_BNB.repositories.UsersRepository;
@@ -37,8 +42,15 @@ public class UsersService {
 			size = 100;
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-		return usersRepo.findAll(pageable);
+		boolean isAdmin = authorities.stream().anyMatch(authority -> authority.getAuthority().equals("ADMIN"));
+
+		if (!isAdmin) {
+			throw new AccessDeniedException("Access denied. Only administrators can access this resource.");
+		} else
+			return usersRepo.findAll(pageable);
 	}
 
 	public User findById(UUID id) throws NotFoundException {

@@ -28,14 +28,15 @@ public class Indirizzo {
 	private String regione;
 	private String Stato;
 	@OneToMany(mappedBy = "indirizzo")
-	private List<Alloggio> alloggi;
+	private List<Annuncio> annunci;
 
 	public Indirizzo(String via, String città, String regione, String stato) {
 
 		this.via = via;
 		this.città = città;
 		this.regione = regione;
-		Stato = stato;
+		this.Stato = stato;
+
 	}
 
 }

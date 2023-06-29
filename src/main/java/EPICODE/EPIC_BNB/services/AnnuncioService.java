@@ -1,5 +1,6 @@
 package EPICODE.EPIC_BNB.services;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -11,38 +12,39 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import EPICODE.EPIC_BNB.entities.Alloggio;
 import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.Indirizzo;
 import EPICODE.EPIC_BNB.entities.User;
-import EPICODE.EPIC_BNB.entities.payload.AlloggioCreatePayload;
 import EPICODE.EPIC_BNB.entities.payload.AnnuncioCreatePayload;
+import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
 import EPICODE.EPIC_BNB.repositories.AnnuncioRepository;
+import EPICODE.EPIC_BNB.repositories.IndirizzoRepository;
 
 @Service
 public class AnnuncioService {
 	@Autowired
 	AnnuncioRepository annunciorepo;
-	@Autowired
-	AlloggioService alloggioService;
+
 	@Autowired
 	UsersService usersService;
 	@Autowired
 	IndirizzoService indirizzoService;
+	@Autowired
+	IndirizzoRepository indirizzoRepo;
 
 	public Annuncio create(AnnuncioCreatePayload a) {
+
 		User user = usersService.findByEmail(a.getUserEmail());
+
 		Indirizzo newIndirizzo = new Indirizzo(a.getViaIndirizzo(), a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
 				a.getStatoIndirizzo());
-		indirizzoService.create(newIndirizzo);
-		AlloggioCreatePayload alloggioPayload = new AlloggioCreatePayload(a.getNome(), a.getTipologia(),
-				a.getPostiLetto(), a.getImage(), a.getServizi(), a.getUserEmail(), newIndirizzo.getVia(),
-				newIndirizzo.getCittà(), newIndirizzo.getRegione(), newIndirizzo.getStato());
-		alloggioService.create(alloggioPayload);
-		Alloggio alloggio = alloggioService.findByNome(a.getNome());
-		Annuncio newAnnuncio = new Annuncio(a.getNomeAnnuncio(), a.getPrezzo(), alloggio);
+
+		Annuncio newAnnuncio = new Annuncio(a.getNomeAnnuncio(), a.getPrezzo(), LocalDate.now(), a.getTipologia(),
+				a.getPostiLetto(), a.getImage(), a.getServizi(), user, newIndirizzo);
+
 		return annunciorepo.save(newAnnuncio);
+
 	}
 
 	public Page<Annuncio> find(int page, int size, String sortBy) {
@@ -56,7 +58,7 @@ public class AnnuncioService {
 	}
 
 	public List<Annuncio> findAnnuncioByUserId(UUID idUser) {
-		List<Annuncio> annunciPerUser = annunciorepo.findByAlloggioUserId(idUser);
+		List<Annuncio> annunciPerUser = annunciorepo.findByUserId(idUser);
 		if (annunciPerUser.isEmpty())
 			throw new NotFoundException("Non hai ancora pubblicato nessun annuncio");
 		else
@@ -64,12 +66,12 @@ public class AnnuncioService {
 
 	}
 
-	public Annuncio findById(UUID id) throws NotFoundException {
+	public Annuncio findById(UUID id) {
 		return annunciorepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("Annuncio con Id:" + id + "non trovato!!"));
 	}
 
-	public Annuncio findByNome(String nome) throws NotFoundException {
+	public Annuncio findByNome(String nome) {
 		return annunciorepo.findByNome(nome)
 				.orElseThrow(() -> new NotFoundException("Annuncio con nome:" + nome + "non trovato!!"));
 	}
@@ -82,20 +84,37 @@ public class AnnuncioService {
 			return annunci.stream().sorted(Comparator.comparing(Annuncio::getNome)).toList();
 	}
 
-	public Annuncio findByIdAndUpdate(UUID id, Annuncio a) throws NotFoundException {
+	public Annuncio findByIdAndUpdate(UUID id, AnnuncioCreatePayload a) {
 		Annuncio found = this.findById(id);
+		if (found == null) {
+			throw new NotFoundException("Nessun annuncio trovato");
+		} else {
+			found.setId(id);
+			found.setNome(a.getNome());
+			found.setPrezzo(a.getPrezzo());
+//			Alloggio alloggio = found.getAlloggio();
+//			found.setAlloggio(alloggioService.findByIdAndUpdate(alloggio.getId(), alloggio));
+			found.setTipologia(a.getTipologia());
+			found.setPostiLetto(a.getPostiLetto());
+			found.setImage(a.getImage());
+			found.setServizi(a.getServizi());
+			User user = usersService.findByEmail(a.getUserEmail());
+			UserCreatePayload userPayload = new UserCreatePayload(user.getName(), user.getSurname(), user.getUsername(),
+					user.getEmail(), user.getPassword());
+			found.setUser(usersService.findByIdAndUpdate(user.getId(), userPayload));
+			Indirizzo indirizzo = indirizzoService.findByVia(a.getViaIndirizzo());
+			found.setIndirizzo(indirizzoService.findByIdAndUpdate(indirizzo.getId(), indirizzo));
+			return annunciorepo.save(found);
+		}
 
-		found.setId(id);
-		found.setNome(a.getNome());
-		found.setPrezzo(a.getPrezzo());
-		found.setAlloggio(alloggioService.findByIdAndUpdate(a.getAlloggio().getId(), a.getAlloggio()));
-
-		return annunciorepo.save(found);
 	}
 
-	public void findByIdAndDelete(UUID id) throws NotFoundException {
+	public void findByIdAndDelete(UUID id) {
 		Annuncio found = this.findById(id);
-		annunciorepo.delete(found);
+		if (found == null) {
+			throw new NotFoundException("Nessun annuncio trovato");
+		} else
+			annunciorepo.delete(found);
 	}
 
 }

@@ -2,6 +2,7 @@ package EPICODE.EPIC_BNB.entities.payload;
 
 import java.util.List;
 
+import EPICODE.EPIC_BNB.entities.Servizi;
 import EPICODE.EPIC_BNB.entities.TipoAlloggio;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -20,7 +21,7 @@ public class AlloggioCreatePayload {
 	@NotNull(message = "Le immagini sono obbligatorie")
 	List<String> image;
 	@NotNull(message = "I servizi sono obbligatori")
-	List<String> servizi;
+	List<Servizi> servizi;
 	@Email(message = "Non hai inserito un indirizzo email valido")
 	String userEmail;
 	@NotNull(message = "La via è obbligatoria")
@@ -36,7 +37,7 @@ public class AlloggioCreatePayload {
 			@NotNull(message = "La tipologia dell' alloggio è obbligatoria") TipoAlloggio tipologia,
 			@NotNull(message = "Il numero di posti letto è obbligatorio") int postiLetto,
 			@NotNull(message = "Le immagini sono obbligatorie") List<String> image,
-			@NotNull(message = "I servizi sono obbligatori") List<String> servizi,
+			@NotNull(message = "I servizi sono obbligatori") List<Servizi> servizi,
 			@Email(message = "Non hai inserito un indirizzo email valido") String userEmail,
 			@NotNull(message = "La via è obbligatoria") String viaIndirizzo,
 			@NotNull(message = "La città è obbligatoria") String cittàIndirizzo,
@@ -52,7 +53,7 @@ public class AlloggioCreatePayload {
 		this.viaIndirizzo = viaIndirizzo;
 		this.cittàIndirizzo = cittàIndirizzo;
 		this.regioneIndirizzo = regioneIndirizzo;
-		StatoIndirizzo = statoIndirizzo;
+		this.StatoIndirizzo = statoIndirizzo;
 	}
 
 }

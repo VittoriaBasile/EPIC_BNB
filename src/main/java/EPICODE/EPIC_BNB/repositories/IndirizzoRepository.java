@@ -11,4 +11,5 @@ import EPICODE.EPIC_BNB.entities.Indirizzo;
 @Repository
 public interface IndirizzoRepository extends JpaRepository<Indirizzo, UUID> {
 	Optional<Indirizzo> findByVia(String via);
+
 }
