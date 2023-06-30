@@ -36,14 +36,6 @@ public class UsersController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public Page<User> getUsers(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "id") String sortBy) {
-
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//
-//		if (!authorities.contains(new SimpleGrantedAuthority("ADMIN"))) {
-//			throw new UnauthorizedException("Access denied. Only administrators can access this resource.");
-//		} 
-
 		return usersService.find(page, size, sortBy);
 
 	}

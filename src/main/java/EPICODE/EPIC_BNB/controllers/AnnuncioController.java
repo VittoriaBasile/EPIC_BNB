@@ -57,6 +57,14 @@ public class AnnuncioController {
 		return annuncioService.findByFilter(encodedFilter);
 	}
 
+	@GetMapping("/prezzo")
+	public List<Annuncio> getAnnunciByPrezzoRange(@RequestParam("prezzoMinimo") double prezzoMinimo,
+			@RequestParam("prezzoMassimo") double prezzoMassimo) {
+
+		List<Annuncio> annunci = annuncioService.findByPrezzi(prezzoMinimo, prezzoMassimo);
+		return annunci;
+	}
+
 	// TESTATA
 	@GetMapping("/me")
 	public List<Annuncio> getAnnunciByUser() {
@@ -90,6 +98,7 @@ public class AnnuncioController {
 
 	}
 
+	// TESTATA
 	@DeleteMapping("/me/{annuncioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteAnnuncio(@PathVariable UUID annuncioId) {

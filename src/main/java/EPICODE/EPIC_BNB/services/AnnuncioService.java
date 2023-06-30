@@ -86,6 +86,15 @@ public class AnnuncioService {
 
 	}
 
+	public List<Annuncio> findByPrezzi(double prezzoMinimo, double prezzoMassimo) {
+		List<Annuncio> annunci = annuncioRepo.findByPrezzoRange(prezzoMinimo, prezzoMassimo);
+		if (annunci.isEmpty()) {
+			throw new NotFoundException(
+					"Nessun annuncio trovato con prezzo compreso tra " + prezzoMinimo + " e " + prezzoMassimo);
+		} else
+			return annunci;
+	}
+
 	public Annuncio findById(UUID id) {
 		return annuncioRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("Annuncio con Id:" + id + "non trovato!!"));

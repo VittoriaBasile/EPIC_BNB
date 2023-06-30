@@ -22,4 +22,8 @@ public interface AnnuncioRepository extends JpaRepository<Annuncio, UUID> {
 
 	Optional<Annuncio> findByIdAndUserId(UUID annuncioId, UUID userId);
 
+	@Query("SELECT a FROM Annuncio a WHERE a.prezzo>= :prezzoMinimo AND a.prezzo <= :prezzoMassimo")
+	List<Annuncio> findByPrezzoRange(@Param("prezzoMinimo") double prezzoMinimo,
+			@Param("prezzoMassimo") double prezzoMassimo);
+
 }
