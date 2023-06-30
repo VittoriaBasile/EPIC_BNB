@@ -41,6 +41,7 @@ public class Annuncio {
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Indirizzo indirizzo;
 	@OneToMany(mappedBy = "annuncio")
+	@JsonIgnore
 	private List<Prenotazione> prenotazioni;
 
 	public Annuncio(String nome, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia, int postiLetto,

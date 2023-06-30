@@ -29,7 +29,9 @@ public class PrenotazioneService {
 
 	public Prenotazione create(PrenotazioneCreatePayload p) {
 		User user = usersService.findByEmail(p.getUserEmail());
-		Annuncio annuncio = annuncioService.findByNome(p.getNomeAnnuncio());
+		String nomeAnnuncio = p.getNomeAnnuncio().replaceAll(" ", "-");
+		Annuncio annuncio = annuncioService.findByNome(nomeAnnuncio);
+
 		List<Prenotazione> prenotazioni = prenotazioneRepo.findByDataInizioAndAnnuncio(p.getDataInizio(), annuncio);
 
 		if (!prenotazioni.isEmpty()) {
@@ -50,12 +52,30 @@ public class PrenotazioneService {
 		return prenotazioneRepo.findAll(pageable);
 	}
 
-	public Prenotazione findById(UUID id) throws NotFoundException {
+	public Prenotazione findById(UUID id) {
 		return prenotazioneRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("Prenotazione con Id:" + id + "non trovata!!"));
 	}
 
-	public void findByIdAndDelete(UUID id) throws NotFoundException {
+	public List<Prenotazione> findByUser(User user) {
+		List<Prenotazione> prenotazioni = prenotazioneRepo.findByUser(user);
+		if (prenotazioni.isEmpty()) {
+			throw new NotFoundException("Nessuna prenotazione trovata per questo utente: " + user);
+		} else
+			return prenotazioni;
+	}
+
+	public Prenotazione FindByIdAndUser(UUID prenotazioneId, User user) {
+		Prenotazione prenotazione = prenotazioneRepo.findByIdAndUser(prenotazioneId, user);
+		if (prenotazione == null) {
+			throw new NotFoundException(
+					"Nessuna prenotazione trovata con id: " + prenotazioneId + "per questo user: " + user);
+		} else
+			return prenotazione;
+
+	}
+
+	public void findByIdAndDelete(UUID id) {
 		Prenotazione found = this.findById(id);
 		prenotazioneRepo.delete(found);
 	}

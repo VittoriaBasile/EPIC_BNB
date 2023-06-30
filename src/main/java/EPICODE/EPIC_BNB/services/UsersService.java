@@ -2,6 +2,7 @@ package EPICODE.EPIC_BNB.services;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class UsersService {
 		usersRepo.findByEmail(u.getEmail()).ifPresent(user -> {
 			throw new BadRequestException("Email " + user.getEmail() + " already in use!");
 		});
+		Optional<User> existingUserByUsername = usersRepo.findByUsername(u.getUsername());
+		if (existingUserByUsername.isPresent()) {
+			throw new BadRequestException(
+					"Username " + existingUserByUsername.get().getUsername() + " already in use!");
+		}
 		User newUser = new User(u.getName(), u.getSurname(), u.getUsername(), u.getEmail(), u.getPassword());
 		newUser.setRole(Role.USER);
 		return usersRepo.save(newUser);

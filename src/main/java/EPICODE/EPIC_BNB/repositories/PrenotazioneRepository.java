@@ -9,8 +9,13 @@ import org.springframework.stereotype.Repository;
 
 import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.Prenotazione;
+import EPICODE.EPIC_BNB.entities.User;
 
 @Repository
 public interface PrenotazioneRepository extends JpaRepository<Prenotazione, UUID> {
 	List<Prenotazione> findByDataInizioAndAnnuncio(LocalDate dataInizio, Annuncio annuncio);
+
+	List<Prenotazione> findByUser(User user);
+
+	Prenotazione findByIdAndUser(UUID prenotazioneId, User user);
 }
