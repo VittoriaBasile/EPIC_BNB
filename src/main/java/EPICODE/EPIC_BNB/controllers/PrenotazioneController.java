@@ -59,7 +59,7 @@ public class PrenotazioneController {
 //TESTATA
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
-	// @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 	public Prenotazione savePrenotazione(@RequestBody @Validated PrenotazioneCreatePayload body) {
 		return prenotazioneService.create(body);
 	}
