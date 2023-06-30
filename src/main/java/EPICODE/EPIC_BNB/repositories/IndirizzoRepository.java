@@ -12,4 +12,5 @@ import EPICODE.EPIC_BNB.entities.Indirizzo;
 public interface IndirizzoRepository extends JpaRepository<Indirizzo, UUID> {
 	Optional<Indirizzo> findByVia(String via);
 
+	Indirizzo findByViaAndCittàAndRegioneAndStato(String via, String città, String regione, String stato);
 }

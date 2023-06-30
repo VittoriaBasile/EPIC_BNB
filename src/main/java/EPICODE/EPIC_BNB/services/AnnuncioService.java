@@ -3,6 +3,7 @@ package EPICODE.EPIC_BNB.services;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.Indirizzo;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.AnnuncioCreatePayload;
-import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
 import EPICODE.EPIC_BNB.repositories.AnnuncioRepository;
 import EPICODE.EPIC_BNB.repositories.IndirizzoRepository;
@@ -24,7 +24,7 @@ import EPICODE.EPIC_BNB.repositories.IndirizzoRepository;
 @Service
 public class AnnuncioService {
 	@Autowired
-	AnnuncioRepository annunciorepo;
+	AnnuncioRepository annuncioRepo;
 
 	@Autowired
 	UsersService usersService;
@@ -36,14 +36,24 @@ public class AnnuncioService {
 	public Annuncio create(AnnuncioCreatePayload a) {
 
 		User user = usersService.findByEmail(a.getUserEmail());
+		String encodeVia = a.getViaIndirizzo().replaceAll(" ", "-");
+		Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndRegioneAndStato(encodeVia,
+				a.getCittàIndirizzo(), a.getRegioneIndirizzo(), a.getStatoIndirizzo());
+		Indirizzo newIndirizzo;
+		if (existingIndirizzo != null) {
 
-		Indirizzo newIndirizzo = new Indirizzo(a.getViaIndirizzo(), a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
-				a.getStatoIndirizzo());
+			newIndirizzo = existingIndirizzo;
+		} else {
 
-		Annuncio newAnnuncio = new Annuncio(a.getNomeAnnuncio(), a.getPrezzo(), LocalDate.now(), a.getTipologia(),
+			newIndirizzo = new Indirizzo(encodeVia, a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
+					a.getStatoIndirizzo());
+			indirizzoRepo.save(newIndirizzo);
+		}
+		String encodeNome = a.getNome().replaceAll(" ", "-");
+		Annuncio newAnnuncio = new Annuncio(encodeNome, a.getPrezzo(), LocalDate.now(), a.getTipologia(),
 				a.getPostiLetto(), a.getImage(), a.getServizi(), user, newIndirizzo);
 
-		return annunciorepo.save(newAnnuncio);
+		return annuncioRepo.save(newAnnuncio);
 
 	}
 
@@ -54,11 +64,11 @@ public class AnnuncioService {
 			size = 100;
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 
-		return annunciorepo.findAll(pageable);
+		return annuncioRepo.findAll(pageable);
 	}
 
-	public List<Annuncio> findAnnuncioByUserId(UUID idUser) {
-		List<Annuncio> annunciPerUser = annunciorepo.findByUserId(idUser);
+	public List<Annuncio> findAnnunciByUserId(UUID idUser) {
+		List<Annuncio> annunciPerUser = annuncioRepo.findByUserId(idUser);
 		if (annunciPerUser.isEmpty())
 			throw new NotFoundException("Non hai ancora pubblicato nessun annuncio");
 		else
@@ -66,18 +76,28 @@ public class AnnuncioService {
 
 	}
 
+	public Optional<Annuncio> findAnnuncioByIdAndUserId(UUID annuncioId, UUID idUser) {
+		Optional<Annuncio> annuncioPerUser = annuncioRepo.findByIdAndUserId(annuncioId, idUser);
+		if (annuncioPerUser == null)
+			throw new NotFoundException(
+					"Nessun annuncio con id: " + annuncioId + " trovato per lo user con id: " + idUser);
+		else
+			return annuncioPerUser;
+
+	}
+
 	public Annuncio findById(UUID id) {
-		return annunciorepo.findById(id)
+		return annuncioRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("Annuncio con Id:" + id + "non trovato!!"));
 	}
 
 	public Annuncio findByNome(String nome) {
-		return annunciorepo.findByNome(nome)
+		return annuncioRepo.findByNome(nome)
 				.orElseThrow(() -> new NotFoundException("Annuncio con nome:" + nome + "non trovato!!"));
 	}
 
 	public List<Annuncio> findByFilter(String filter) {
-		List<Annuncio> annunci = annunciorepo.findByFilter(filter);
+		List<Annuncio> annunci = annuncioRepo.findByFilter(filter);
 		if (annunci.isEmpty()) {
 			throw new NotFoundException("Nessun annuncio trovato");
 		} else
@@ -92,19 +112,24 @@ public class AnnuncioService {
 			found.setId(id);
 			found.setNome(a.getNome());
 			found.setPrezzo(a.getPrezzo());
-//			Alloggio alloggio = found.getAlloggio();
-//			found.setAlloggio(alloggioService.findByIdAndUpdate(alloggio.getId(), alloggio));
 			found.setTipologia(a.getTipologia());
 			found.setPostiLetto(a.getPostiLetto());
 			found.setImage(a.getImage());
 			found.setServizi(a.getServizi());
-			User user = usersService.findByEmail(a.getUserEmail());
-			UserCreatePayload userPayload = new UserCreatePayload(user.getName(), user.getSurname(), user.getUsername(),
-					user.getEmail(), user.getPassword());
-			found.setUser(usersService.findByIdAndUpdate(user.getId(), userPayload));
-			Indirizzo indirizzo = indirizzoService.findByVia(a.getViaIndirizzo());
-			found.setIndirizzo(indirizzoService.findByIdAndUpdate(indirizzo.getId(), indirizzo));
-			return annunciorepo.save(found);
+			Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndRegioneAndStato(a.getViaIndirizzo(),
+					a.getCittàIndirizzo(), a.getRegioneIndirizzo(), a.getStatoIndirizzo());
+			Indirizzo newIndirizzo;
+			if (existingIndirizzo != null) {
+
+				newIndirizzo = existingIndirizzo;
+			} else {
+
+				newIndirizzo = new Indirizzo(a.getViaIndirizzo(), a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
+						a.getStatoIndirizzo());
+				indirizzoRepo.save(newIndirizzo);
+			}
+			found.setIndirizzo(newIndirizzo);
+			return annuncioRepo.save(found);
 		}
 
 	}
@@ -114,7 +139,7 @@ public class AnnuncioService {
 		if (found == null) {
 			throw new NotFoundException("Nessun annuncio trovato");
 		} else
-			annunciorepo.delete(found);
+			annuncioRepo.delete(found);
 	}
 
 }

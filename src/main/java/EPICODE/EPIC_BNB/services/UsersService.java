@@ -1,6 +1,7 @@
 package EPICODE.EPIC_BNB.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import EPICODE.EPIC_BNB.entities.Annuncio;
+import EPICODE.EPIC_BNB.entities.Prenotazione;
 import EPICODE.EPIC_BNB.entities.Role;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.UserCreatePayload;
@@ -59,21 +62,30 @@ public class UsersService {
 
 	public User findByEmail(String email) throws NotFoundException {
 		return usersRepo.findByEmail(email)
-				.orElseThrow(() -> new NotFoundException("Utete con email:" + email + "non trovato!!"));
+				.orElseThrow(() -> new NotFoundException("Utete con email:" + email + " non trovato!!"));
 	}
 
 	public User findByUsername(String username) throws NotFoundException {
 		return usersRepo.findByUsername(username)
-				.orElseThrow(() -> new NotFoundException("Utete:" + username + "non trovato!!"));
+				.orElseThrow(() -> new NotFoundException("Utete:" + username + " non trovato!!"));
 	}
 
 	public User findByUsernameAndUpdate(String username, UserCreatePayload u) {
 		User user = usersRepo.findByUsername(username)
-				.orElseThrow(() -> new NotFoundException("Utete:" + username + "non trovato!!"));
+				.orElseThrow(() -> new NotFoundException("Utete:" + username + " non trovato!!"));
 		user.setName(u.getName());
 		user.setSurname(u.getSurname());
 		user.setUsername(u.getUsername());
-		user.setEmail(u.getEmail());
+		user.setPassword(u.getPassword());
+		List<Annuncio> annunci = user.getAnnunci();
+		List<Prenotazione> prenotazioni = user.getPrenotazioni();
+
+		for (Annuncio annuncio : annunci) {
+			annuncio.setUser(user);
+		}
+		for (Prenotazione prenotazione : prenotazioni) {
+			prenotazione.setUser(user);
+		}
 
 		return usersRepo.save(user);
 	}

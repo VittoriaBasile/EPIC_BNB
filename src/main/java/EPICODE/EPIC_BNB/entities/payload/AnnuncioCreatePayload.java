@@ -15,11 +15,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class AnnuncioCreatePayload {
 	@NotNull(message = "Il nome è obbligatorio")
-	String nomeAnnuncio;
+	String nome;
 	@NotNull(message = "Il prezzo è obbligatorio")
 	double prezzo;
-	@NotNull(message = "Il nome dell' alloggio è obbligatorio")
-	String nome;
 	@NotNull(message = "La tipologia dell' alloggio è obbligatoria")
 	TipoAlloggio tipologia;
 	@NotNull(message = "Il numero di posti letto è obbligatorio")
@@ -37,5 +35,5 @@ public class AnnuncioCreatePayload {
 	@NotNull(message = "La regione è obbligatoria")
 	String regioneIndirizzo;
 	@NotNull(message = "Lo Stato è obbligatorio")
-	String StatoIndirizzo;
+	String statoIndirizzo;
 }

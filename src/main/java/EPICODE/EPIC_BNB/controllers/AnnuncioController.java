@@ -1,6 +1,8 @@
 package EPICODE.EPIC_BNB.controllers;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriUtils;
 
 import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.User;
@@ -37,26 +40,33 @@ public class AnnuncioController {
 	@Autowired
 	UsersService usersService;
 
+//TESTATA
 	@GetMapping("")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public Page<Annuncio> getAnnunci(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String nome) {
 		return annuncioService.find(page, size, sortBy);
 	}
 
+	// TESTATA
 	@GetMapping("/filter")
 	public List<Annuncio> getAnnunciByFilter(@RequestParam(required = true) String filter) {
-		return annuncioService.findByFilter(filter);
+		String replacedFilter = filter.replace(" ", "-");
+		String encodedFilter = UriUtils.encode(replacedFilter, StandardCharsets.UTF_8);
+		return annuncioService.findByFilter(encodedFilter);
 	}
 
+	// TESTATA
 	@GetMapping("/me")
 	public List<Annuncio> getAnnunciByUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		User user = usersService.findByUsername(username);
-		return annuncioService.findAnnuncioByUserId(user.getId());
+		return annuncioService.findAnnunciByUserId(user.getId());
 	}
 
+	// TESTATA
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Annuncio saveAnnuncio(@RequestBody @Validated AnnuncioCreatePayload body) {
@@ -64,10 +74,14 @@ public class AnnuncioController {
 		return annuncioService.create(body);
 	}
 
-	@PutMapping("/{annuncioId}")
+	// TESTATA
+	@PutMapping("/me/{annuncioId}")
 	public Annuncio updateAnnuncio(@PathVariable UUID annuncioId, @RequestBody AnnuncioCreatePayload body) {
-		Annuncio annuncio = annuncioService.findById(annuncioId);
-		if (annuncio == null) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		User user = usersService.findByUsername(username);
+		Optional<Annuncio> singoloAnnuncioPerUser = annuncioService.findAnnuncioByIdAndUserId(annuncioId, user.getId());
+		if (singoloAnnuncioPerUser == null) {
 			throw new NotFoundException("Nessun annuncio trovato con id: " + annuncioId);
 		} else {
 			Annuncio annuncioModificato = annuncioService.findByIdAndUpdate(annuncioId, body);
@@ -76,7 +90,7 @@ public class AnnuncioController {
 
 	}
 
-	@DeleteMapping("/{annuncioId}")
+	@DeleteMapping("/me/{annuncioId}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteAnnuncio(@PathVariable UUID annuncioId) {
 		annuncioService.findByIdAndDelete(annuncioId);

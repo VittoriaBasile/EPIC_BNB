@@ -3,6 +3,8 @@ package EPICODE.EPIC_BNB.entities;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -26,8 +28,9 @@ public class Indirizzo {
 	private String via;
 	private String città;
 	private String regione;
-	private String Stato;
+	private String stato;
 	@OneToMany(mappedBy = "indirizzo")
+	@JsonIgnore
 	private List<Annuncio> annunci;
 
 	public Indirizzo(String via, String città, String regione, String stato) {
@@ -35,7 +38,7 @@ public class Indirizzo {
 		this.via = via;
 		this.città = città;
 		this.regione = regione;
-		this.Stato = stato;
+		this.stato = stato;
 
 	}
 
