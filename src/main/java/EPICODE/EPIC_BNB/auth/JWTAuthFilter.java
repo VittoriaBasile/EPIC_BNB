@@ -28,25 +28,29 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String authHeader = request.getHeader("Authorization");
+		if (!request.getMethod().equalsIgnoreCase("OPTIONS")) {
+			String authHeader = request.getHeader("Authorization");
 
-		if (authHeader == null || !authHeader.startsWith("Bearer "))
-			throw new UnauthorizedException("Per favore aggiungi il token all'authorization header");
+			if (authHeader == null || !authHeader.startsWith("Bearer "))
+				throw new UnauthorizedException("Per favore aggiungi il token all'authorization header");
 
-		String accessToken = authHeader.substring(7);
-		JWTTools.isTokenValid(accessToken);
+			String accessToken = authHeader.substring(7);
+			JWTTools.isTokenValid(accessToken);
 
-		String username = JWTTools.extractSubject(accessToken);
-		try {
-			User user = usersService.findByUsername(username);
+			String username = JWTTools.extractSubject(accessToken);
+			try {
+				User user = usersService.findByUsername(username);
 
-			UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
-					user.getAuthorities());
-			authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-			SecurityContextHolder.getContext().setAuthentication(authToken);
+				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
+						user.getAuthorities());
+				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				SecurityContextHolder.getContext().setAuthentication(authToken);
+				filterChain.doFilter(request, response);
+			} catch (NotFoundException e) {
+				e.printStackTrace();
+			}
+		} else {
 			filterChain.doFilter(request, response);
-		} catch (NotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 
