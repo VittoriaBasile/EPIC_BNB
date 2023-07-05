@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -37,12 +38,15 @@ public class User implements UserDetails {
 	private String password;
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Annuncio> annunci;
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonManagedReference
 	private List<Prenotazione> prenotazioni;
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private List<Commento> commenti;
 
 	public User(String name, String surname, String username, String email, String password) {
 		super();

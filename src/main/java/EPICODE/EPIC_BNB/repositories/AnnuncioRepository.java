@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import EPICODE.EPIC_BNB.entities.Annuncio;
+import EPICODE.EPIC_BNB.entities.TipoAlloggio;
 
 @Repository
 public interface AnnuncioRepository extends JpaRepository<Annuncio, UUID> {
@@ -19,6 +20,8 @@ public interface AnnuncioRepository extends JpaRepository<Annuncio, UUID> {
 	List<Annuncio> findByFilter(@Param("filter") String filter);
 
 	List<Annuncio> findByUserId(UUID idUser);
+
+	List<Annuncio> findByTipologia(TipoAlloggio tipo);
 
 	Optional<Annuncio> findByIdAndUserId(UUID annuncioId, UUID userId);
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import EPICODE.EPIC_BNB.entities.Annuncio;
 import EPICODE.EPIC_BNB.entities.Indirizzo;
+import EPICODE.EPIC_BNB.entities.TipoAlloggio;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.AnnuncioCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
@@ -73,6 +74,15 @@ public class AnnuncioService {
 			throw new NotFoundException("Non hai ancora pubblicato nessun annuncio");
 		else
 			return annunciPerUser;
+
+	}
+
+	public List<Annuncio> findAnnunciByTipoAlloggio(TipoAlloggio tipo) {
+		List<Annuncio> annunciPerTipoAlloggio = annuncioRepo.findByTipologia(tipo);
+		if (annunciPerTipoAlloggio.isEmpty())
+			throw new NotFoundException("Nessun annuncio trovato di tipo: " + tipo);
+		else
+			return annunciPerTipoAlloggio;
 
 	}
 

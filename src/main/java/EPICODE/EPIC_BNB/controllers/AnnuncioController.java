@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriUtils;
 
 import EPICODE.EPIC_BNB.entities.Annuncio;
+import EPICODE.EPIC_BNB.entities.TipoAlloggio;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.AnnuncioCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
@@ -33,7 +34,8 @@ import EPICODE.EPIC_BNB.services.UsersService;
 
 @RestController
 @RequestMapping("/annunci")
-@PreAuthorize("hasAuthority('USER')")
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+
 public class AnnuncioController {
 	@Autowired
 	private AnnuncioService annuncioService;
@@ -42,7 +44,6 @@ public class AnnuncioController {
 
 //TESTATA
 	@GetMapping("")
-	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public Page<Annuncio> getAnnunci(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String nome) {
@@ -65,6 +66,13 @@ public class AnnuncioController {
 		return annunci;
 	}
 
+	@GetMapping("/tipo")
+	public List<Annuncio> getAnnunciByTipoAlloggio(@RequestParam("tipo") TipoAlloggio tipo) {
+
+		List<Annuncio> annunci = annuncioService.findAnnunciByTipoAlloggio(tipo);
+		return annunci;
+	}
+
 	// TESTATA
 	@GetMapping("/me")
 	public List<Annuncio> getAnnunciByUser() {
@@ -78,7 +86,7 @@ public class AnnuncioController {
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Annuncio saveAnnuncio(@RequestBody @Validated AnnuncioCreatePayload body) {
-		System.out.println(body.getStatoIndirizzo());
+
 		return annuncioService.create(body);
 	}
 

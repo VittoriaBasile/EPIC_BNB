@@ -30,13 +30,17 @@ public class SecurityConfig {
 		http.csrf(c -> c.disable());
 
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll());
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/swagger-ui/**").permitAll());
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/api-docs/**").permitAll());
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/users/**").authenticated());
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/annunci/**").authenticated());
 		http.authorizeHttpRequests(auth -> auth.requestMatchers("/prenotazioni/**").authenticated());
+		http.authorizeHttpRequests(auth -> auth.requestMatchers("/commenti/**").authenticated());
 
-		// http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
 		http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(corsFilter, JWTAuthFilter.class);
+		http.addFilterBefore(exceptionHandlerFilter, JWTAuthFilter.class);
+
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		return http.build();

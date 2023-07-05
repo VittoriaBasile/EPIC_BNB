@@ -3,7 +3,7 @@ package EPICODE.EPIC_BNB.entities;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,33 +17,29 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "prenotazioni")
+@Table(name = "commenti")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Prenotazione {
+public class Commento {
 	@Id
 	@GeneratedValue
 	private UUID id;
-	private LocalDate dataInizio;
-	private LocalDate dataFine;
-	private int numeroOspiti;
+	private LocalDate dataInserimento;
+	private String bodyCommento;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonBackReference
+	@JsonIgnore
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonIgnore
 	private Annuncio annuncio;
-	private double prezzo;
 
-	public Prenotazione(LocalDate dataInizio, int numeroOspiti, User user, Annuncio annuncio) {
-
-		this.dataInizio = dataInizio;
-		this.numeroOspiti = numeroOspiti;
+	public Commento(String bodyCommento, LocalDate dataInserimento, User user, Annuncio annuncio) {
+		this.bodyCommento = bodyCommento;
 		this.user = user;
 		this.annuncio = annuncio;
-		this.dataFine = dataInizio.plusDays(7);
-		this.prezzo = (this.getAnnuncio().getPrezzo() * numeroOspiti) + (5 * numeroOspiti);
+		this.dataInserimento = dataInserimento;
 	}
 
 }

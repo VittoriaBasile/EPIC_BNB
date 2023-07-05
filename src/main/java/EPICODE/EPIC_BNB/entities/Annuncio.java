@@ -43,6 +43,9 @@ public class Annuncio {
 	@OneToMany(mappedBy = "annuncio")
 	@JsonIgnore
 	private List<Prenotazione> prenotazioni;
+	@OneToMany(mappedBy = "annuncio")
+	@JsonIgnore
+	private List<Commento> commenti;
 
 	public Annuncio(String nome, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia, int postiLetto,
 			List<String> image, List<Servizi> servizi, User user, Indirizzo indirizzo) {
