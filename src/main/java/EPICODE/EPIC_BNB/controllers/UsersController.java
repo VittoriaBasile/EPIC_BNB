@@ -41,7 +41,7 @@ public class UsersController {
 	}
 
 	@GetMapping("/me")
-	@PreAuthorize("hasAnyAuthority('USER')")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
