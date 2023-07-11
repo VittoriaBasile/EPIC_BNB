@@ -16,6 +16,8 @@ import lombok.Setter;
 public class AnnuncioCreatePayload {
 	@NotNull(message = "Il nome è obbligatorio")
 	String nome;
+	@NotNull(message = "La descrizione è obbligatoria")
+	String descrizione;
 	@NotNull(message = "Il prezzo è obbligatorio")
 	double prezzo;
 	@NotNull(message = "La tipologia dell' alloggio è obbligatoria")

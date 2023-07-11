@@ -82,6 +82,12 @@ public class AnnuncioController {
 		return annuncioService.findAnnunciByUserId(user.getId());
 	}
 
+	@GetMapping("/{annuncioId}")
+	public Annuncio getAnnunciById(@PathVariable UUID annuncioId) {
+
+		return annuncioService.findById(annuncioId);
+	}
+
 	// TESTATA
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)

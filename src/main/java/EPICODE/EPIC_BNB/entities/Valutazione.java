@@ -1,6 +1,5 @@
 package EPICODE.EPIC_BNB.entities;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,31 +16,28 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "commenti")
+@Table(name = "valutazioni")
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Commento {
+public class Valutazione {
 	@Id
 	@GeneratedValue
 	private UUID id;
-	private LocalDate dataInserimento;
-	private String bodyCommento;
-
+	private int valore;
 	@ManyToOne(fetch = FetchType.EAGER)
-
+	@JsonIgnore
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Annuncio annuncio;
 
-	public Commento(String bodyCommento, LocalDate dataInserimento, User user, Annuncio annuncio) {
-		this.bodyCommento = bodyCommento;
+	public Valutazione(int valore, User user, Annuncio annuncio) {
+
+		this.valore = valore;
 		this.user = user;
 		this.annuncio = annuncio;
-		this.dataInserimento = dataInserimento;
-
 	}
 
 }

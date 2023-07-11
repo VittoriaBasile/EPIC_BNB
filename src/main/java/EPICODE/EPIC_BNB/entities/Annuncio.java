@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -29,6 +30,7 @@ public class Annuncio {
 	@GeneratedValue
 	private UUID id;
 	private String nome;
+	private String descrizione;
 	private double prezzo;
 	private LocalDate dataInserimento;
 	private TipoAlloggio tipologia;
@@ -36,21 +38,25 @@ public class Annuncio {
 	private List<String> image;
 	private List<Servizi> servizi;
 	@ManyToOne
-	@JsonIgnore
+	// @JsonIgnore
 	private User user;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Indirizzo indirizzo;
 	@OneToMany(mappedBy = "annuncio")
 	@JsonIgnore
 	private List<Prenotazione> prenotazioni;
-	@OneToMany(mappedBy = "annuncio")
+	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Commento> commenti;
+	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private List<Valutazione> valutazioni;
 
-	public Annuncio(String nome, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia, int postiLetto,
-			List<String> image, List<Servizi> servizi, User user, Indirizzo indirizzo) {
-		super();
+	public Annuncio(String nome, String descrizione, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia,
+			int postiLetto, List<String> image, List<Servizi> servizi, User user, Indirizzo indirizzo) {
+
 		this.nome = nome;
+		this.descrizione = descrizione;
 		this.prezzo = prezzo;
 		this.dataInserimento = dataInserimento;
 		this.tipologia = tipologia;

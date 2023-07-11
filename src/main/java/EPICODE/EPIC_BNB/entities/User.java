@@ -47,6 +47,9 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	@JsonIgnore
 	private List<Commento> commenti;
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@JsonIgnore
+	private List<Valutazione> valutazioni;
 
 	public User(String name, String surname, String username, String email, String password) {
 		super();

@@ -51,8 +51,8 @@ public class AnnuncioService {
 			indirizzoRepo.save(newIndirizzo);
 		}
 		String encodeNome = a.getNome().replaceAll(" ", "-");
-		Annuncio newAnnuncio = new Annuncio(encodeNome, a.getPrezzo(), LocalDate.now(), a.getTipologia(),
-				a.getPostiLetto(), a.getImage(), a.getServizi(), user, newIndirizzo);
+		Annuncio newAnnuncio = new Annuncio(encodeNome, a.getDescrizione(), a.getPrezzo(), LocalDate.now(),
+				a.getTipologia(), a.getPostiLetto(), a.getImage(), a.getServizi(), user, newIndirizzo);
 
 		return annuncioRepo.save(newAnnuncio);
 
@@ -130,6 +130,7 @@ public class AnnuncioService {
 		} else {
 			found.setId(id);
 			found.setNome(a.getNome());
+			found.setDescrizione(a.getDescrizione());
 			found.setPrezzo(a.getPrezzo());
 			found.setTipologia(a.getTipologia());
 			found.setPostiLetto(a.getPostiLetto());
