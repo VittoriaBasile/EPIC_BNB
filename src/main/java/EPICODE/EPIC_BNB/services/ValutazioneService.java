@@ -52,23 +52,23 @@ public class ValutazioneService {
 
 	}
 
-//	public double getMediaValutazionePerAnnuncio(String nomeAnnuncio) {
-//		String encodeNomeAnnuncio = nomeAnnuncio.replaceAll(" ", "-");
-//		Annuncio annuncio = annuncioService.findByNome(encodeNomeAnnuncio);
-//		List<Valutazione> valutazioni = annuncio.getValutazioni();
-//		double tot = 0;
-//
-//		for (Valutazione valutazione : valutazioni) {
-//			tot += valutazione.getValore();
-//		}
-//		if (tot == 0) {
-//			return tot;
-//
-//		} else {
-//			return tot / valutazioni.size();
-//		}
+	public double getMediaValutazionePerAnnuncio(String nomeAnnuncio) {
+		String encodeNomeAnnuncio = nomeAnnuncio.replaceAll(" ", "-");
+		Annuncio annuncio = annuncioService.findByNome(encodeNomeAnnuncio);
+		List<Valutazione> valutazioni = annuncio.getValutazioni();
+		double tot = 0;
 
-// }
+		for (Valutazione valutazione : valutazioni) {
+			tot += valutazione.getValore();
+		}
+		if (tot == 0) {
+			return tot;
+
+		} else {
+			return tot / valutazioni.size();
+		}
+
+	}
 
 	public Optional<Valutazione> findValutazioniByAnnuncioAndUser(String nomeAnnuncio, String userEmail) {
 		String encodeNomeAnnuncio = nomeAnnuncio.replaceAll(" ", "-");

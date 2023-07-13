@@ -37,11 +37,11 @@ public class ValutazioneController {
 		return valutazioniPerAnnuncio;
 	}
 
-//	@GetMapping("/nome")
-//	public double getValutazioneMediaPerAnnuncio(@RequestParam("nome") String nomeAnnuncio) {
-//		return valutazioneService.getMediaValutazionePerAnnuncio(nomeAnnuncio);
-//
-//	}
+	@GetMapping("/nome")
+	public double getValutazioneMediaPerAnnuncio(@RequestParam("nome") String nomeAnnuncio) {
+		return valutazioneService.getMediaValutazionePerAnnuncio(nomeAnnuncio);
+
+	}
 
 	@GetMapping("/{nomeAnnuncio}/user/{userEmail}")
 	public Optional<Valutazione> findValutazioneByAnnuncioAndUser(@PathVariable("nomeAnnuncio") String nomeAnnuncio,
