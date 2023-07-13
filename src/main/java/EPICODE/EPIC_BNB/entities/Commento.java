@@ -3,8 +3,6 @@ package EPICODE.EPIC_BNB.entities;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -30,10 +28,9 @@ public class Commento {
 	private String bodyCommento;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnore
+
 	private Annuncio annuncio;
 
 	public Commento(String bodyCommento, LocalDate dataInserimento, User user, Annuncio annuncio) {

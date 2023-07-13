@@ -2,8 +2,6 @@ package EPICODE.EPIC_BNB.entities;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -27,10 +25,10 @@ public class Valutazione {
 	private UUID id;
 	private int valore;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnore
+
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnore
+
 	private Annuncio annuncio;
 
 	public Valutazione(int valore, User user, Annuncio annuncio) {

@@ -51,4 +51,36 @@ public class ValutazioneService {
 			return valutazioni;
 
 	}
+
+//	public double getMediaValutazionePerAnnuncio(String nomeAnnuncio) {
+//		String encodeNomeAnnuncio = nomeAnnuncio.replaceAll(" ", "-");
+//		Annuncio annuncio = annuncioService.findByNome(encodeNomeAnnuncio);
+//		List<Valutazione> valutazioni = annuncio.getValutazioni();
+//		double tot = 0;
+//
+//		for (Valutazione valutazione : valutazioni) {
+//			tot += valutazione.getValore();
+//		}
+//		if (tot == 0) {
+//			return tot;
+//
+//		} else {
+//			return tot / valutazioni.size();
+//		}
+
+// }
+
+	public Optional<Valutazione> findValutazioniByAnnuncioAndUser(String nomeAnnuncio, String userEmail) {
+		String encodeNomeAnnuncio = nomeAnnuncio.replaceAll(" ", "-");
+		Annuncio annuncio = annuncioService.findByNome(encodeNomeAnnuncio);
+		User user = usersService.findByEmail(userEmail);
+		Optional<Valutazione> valutazione = valutazioneRepo.findByAnnuncioAndUser(annuncio, user);
+
+		if (valutazione == null)
+			throw new NotFoundException("Nessuna valutazione trovata per l' annuncio: " + nomeAnnuncio
+					+ "dallu user conn email " + userEmail);
+		else
+			return valutazione;
+
+	}
 }
