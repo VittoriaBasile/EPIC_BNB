@@ -7,6 +7,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -37,6 +38,8 @@ public class Annuncio {
 	private int postiLetto;
 	private List<String> image;
 	private List<Servizi> servizi;
+	@Column(length = 700)
+	private String googleMaps;
 	@ManyToOne
 	// @JsonIgnore
 	private User user;
@@ -53,7 +56,8 @@ public class Annuncio {
 	private List<Valutazione> valutazioni;
 
 	public Annuncio(String nome, String descrizione, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia,
-			int postiLetto, List<String> image, List<Servizi> servizi, User user, Indirizzo indirizzo) {
+			int postiLetto, List<String> image, List<Servizi> servizi, String googleMaps, User user,
+			Indirizzo indirizzo) {
 
 		this.nome = nome;
 		this.descrizione = descrizione;
@@ -63,6 +67,7 @@ public class Annuncio {
 		this.postiLetto = postiLetto;
 		this.image = image;
 		this.servizi = servizi;
+		this.googleMaps = googleMaps;
 		this.user = user;
 		this.indirizzo = indirizzo;
 	}

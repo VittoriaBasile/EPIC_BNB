@@ -65,7 +65,7 @@ public class PrenotazioneService {
 			return prenotazioni;
 	}
 
-	public Prenotazione FindByIdAndUser(UUID prenotazioneId, User user) {
+	public Prenotazione findByIdAndUser(UUID prenotazioneId, User user) {
 		Prenotazione prenotazione = prenotazioneRepo.findByIdAndUser(prenotazioneId, user);
 		if (prenotazione == null) {
 			throw new NotFoundException(
@@ -73,6 +73,15 @@ public class PrenotazioneService {
 		} else
 			return prenotazione;
 
+	}
+
+	public List<Prenotazione> findByAnnuncio(String nomeAnnuncio) {
+		Annuncio annuncio = annuncioService.findByNome(nomeAnnuncio);
+		List<Prenotazione> prenotazioniDataInizioAndAnnuncio = prenotazioneRepo.findByAnnuncio(annuncio);
+		if (prenotazioniDataInizioAndAnnuncio.isEmpty()) {
+			throw new NotFoundException("Nessuna prenotazione trovata per l' annuncio: " + nomeAnnuncio);
+		} else
+			return prenotazioniDataInizioAndAnnuncio;
 	}
 
 	public void findByIdAndDelete(UUID id) {

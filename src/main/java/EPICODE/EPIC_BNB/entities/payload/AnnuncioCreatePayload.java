@@ -28,6 +28,8 @@ public class AnnuncioCreatePayload {
 	List<String> image;
 	@NotNull(message = "I servizi sono obbligatori")
 	List<Servizi> servizi;
+	@NotNull(message = "L' indirizzo googleMaps è obbligatorio")
+	String googleMaps;
 	@Email(message = "Non hai inserito un indirizzo email valido")
 	String userEmail;
 	@NotNull(message = "La via è obbligatoria")

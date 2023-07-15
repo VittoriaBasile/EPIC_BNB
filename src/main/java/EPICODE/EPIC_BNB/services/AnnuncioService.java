@@ -52,7 +52,8 @@ public class AnnuncioService {
 		}
 		String encodeNome = a.getNome().replaceAll(" ", "-");
 		Annuncio newAnnuncio = new Annuncio(encodeNome, a.getDescrizione(), a.getPrezzo(), LocalDate.now(),
-				a.getTipologia(), a.getPostiLetto(), a.getImage(), a.getServizi(), user, newIndirizzo);
+				a.getTipologia(), a.getPostiLetto(), a.getImage(), a.getServizi(), a.getGoogleMaps(), user,
+				newIndirizzo);
 
 		return annuncioRepo.save(newAnnuncio);
 
@@ -111,7 +112,9 @@ public class AnnuncioService {
 	}
 
 	public Annuncio findByNome(String nome) {
-		return annuncioRepo.findByNome(nome)
+		String encodeNome = nome.replaceAll(" ", "-");
+
+		return annuncioRepo.findByNome(encodeNome)
 				.orElseThrow(() -> new NotFoundException("Annuncio con nome:" + nome + "non trovato!!"));
 	}
 

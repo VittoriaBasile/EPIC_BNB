@@ -56,6 +56,13 @@ public class PrenotazioneController {
 		return prenotazioneService.findByUser(user);
 	}
 
+	@GetMapping("{nomeAnnuncio}")
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+	public List<Prenotazione> getPrenotazioniPerAnnuncio(@PathVariable("nomeAnnuncio") String nomeAnnuncio) {
+		List<Prenotazione> prenotazioniperDataInizioAndAnnuncio = prenotazioneService.findByAnnuncio(nomeAnnuncio);
+		return prenotazioniperDataInizioAndAnnuncio;
+	}
+
 //TESTATA
 	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -72,7 +79,7 @@ public class PrenotazioneController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		User user = usersService.findByUsername(username);
-		Prenotazione prenotazione = prenotazioneService.FindByIdAndUser(prenotazioneId, user);
+		Prenotazione prenotazione = prenotazioneService.findByIdAndUser(prenotazioneId, user);
 		if (prenotazione.getDataInizio().minusDays(2).isAfter(LocalDate.now())
 				|| prenotazione.getDataInizio().minusDays(2).isEqual(LocalDate.now())) {
 			prenotazione.setPrezzo(prenotazione.getPrezzo() * 30 / 100);

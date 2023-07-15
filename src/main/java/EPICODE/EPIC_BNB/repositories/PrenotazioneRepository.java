@@ -15,6 +15,8 @@ import EPICODE.EPIC_BNB.entities.User;
 public interface PrenotazioneRepository extends JpaRepository<Prenotazione, UUID> {
 	List<Prenotazione> findByDataInizioAndAnnuncio(LocalDate dataInizio, Annuncio annuncio);
 
+	List<Prenotazione> findByAnnuncio(Annuncio annuncio);
+
 	List<Prenotazione> findByUser(User user);
 
 	Prenotazione findByIdAndUser(UUID prenotazioneId, User user);
