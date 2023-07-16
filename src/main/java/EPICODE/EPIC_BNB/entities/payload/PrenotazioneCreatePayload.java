@@ -12,6 +12,8 @@ import lombok.Setter;
 public class PrenotazioneCreatePayload {
 	@NotNull(message = "La data è obbligatoria")
 	LocalDate dataInizio;
+	@NotNull(message = "La data è obbligatoria")
+	LocalDate dataFine;
 	@NotNull(message = "Il numero degli ospiti è obbligatoria")
 	int numeroOspiti;
 	@Email(message = "Non hai inserito un indirizzo email valido")

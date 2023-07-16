@@ -37,7 +37,8 @@ public class PrenotazioneService {
 		if (!prenotazioni.isEmpty()) {
 			throw new BadRequestException("Impossibile prenotare in questa data, alloggio già prenotato");
 		}
-		Prenotazione newPrenotazione = new Prenotazione(p.getDataInizio(), p.getNumeroOspiti(), user, annuncio);
+		Prenotazione newPrenotazione = new Prenotazione(p.getDataInizio(), p.getDataFine(), p.getNumeroOspiti(), user,
+				annuncio);
 
 		return prenotazioneRepo.save(newPrenotazione);
 	}
