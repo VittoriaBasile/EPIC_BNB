@@ -1,5 +1,6 @@
 package EPICODE.EPIC_BNB.services;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,8 +38,18 @@ public class PrenotazioneService {
 		if (!prenotazioni.isEmpty()) {
 			throw new BadRequestException("Impossibile prenotare in questa data, alloggio già prenotato");
 		}
+
 		Prenotazione newPrenotazione = new Prenotazione(p.getDataInizio(), p.getDataFine(), p.getNumeroOspiti(), user,
 				annuncio);
+
+		double prezzoNotte = newPrenotazione.getAnnuncio().getPrezzo();
+		int notti = (int) ChronoUnit.DAYS.between(p.getDataInizio(), p.getDataFine());
+		int tassaSoggiorno = (5 * p.getNumeroOspiti());
+		double prezzoNotti = prezzoNotte * notti;
+		double prezzoTotale = prezzoNotti * p.getNumeroOspiti();
+		prezzoTotale += tassaSoggiorno;
+
+		newPrenotazione.setPrezzo(prezzoTotale);
 
 		return prenotazioneRepo.save(newPrenotazione);
 	}

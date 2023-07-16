@@ -1,7 +1,6 @@
 package EPICODE.EPIC_BNB.entities;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -34,6 +33,7 @@ public class Prenotazione {
 	@JsonBackReference
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
 	private Annuncio annuncio;
 	private double prezzo;
 
@@ -44,8 +44,7 @@ public class Prenotazione {
 		this.numeroOspiti = numeroOspiti;
 		this.user = user;
 		this.annuncio = annuncio;
-		this.prezzo = ((this.getAnnuncio().getPrezzo() * numeroOspiti) + (5 * numeroOspiti))
-				* ChronoUnit.DAYS.between(dataInizio, dataFine);
+		this.prezzo = 0;
 	}
 
 }
