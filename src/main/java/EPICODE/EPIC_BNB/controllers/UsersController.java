@@ -45,7 +45,8 @@ public class UsersController {
 	public User getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
-		return usersService.findByUsername(username);
+		User user = usersService.findByUsername(username);
+		return user;
 	}
 
 	@PutMapping("/me")
