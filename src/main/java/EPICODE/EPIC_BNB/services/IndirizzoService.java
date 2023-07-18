@@ -20,7 +20,7 @@ public class IndirizzoService {
 
 	public Indirizzo create(Indirizzo i) {
 
-		Indirizzo newIndirizzo = new Indirizzo(i.getVia(), i.getCittà(), i.getRegione(), i.getStato());
+		Indirizzo newIndirizzo = new Indirizzo(i.getVia(), i.getCittà(), i.getStato());
 		return indirizzoRepo.save(newIndirizzo);
 	}
 
@@ -49,7 +49,6 @@ public class IndirizzoService {
 
 		found.setVia(i.getVia());
 		found.setCittà(i.getCittà());
-		found.setRegione(i.getRegione());
 		found.setStato(i.getStato());
 
 		return indirizzoRepo.save(found);

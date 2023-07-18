@@ -38,16 +38,15 @@ public class AnnuncioService {
 
 		User user = usersService.findByEmail(a.getUserEmail());
 		String encodeVia = a.getViaIndirizzo().replaceAll(" ", "-");
-		Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndRegioneAndStato(encodeVia,
-				a.getCittàIndirizzo(), a.getRegioneIndirizzo(), a.getStatoIndirizzo());
+		Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndStato(encodeVia, a.getCittàIndirizzo(),
+				a.getStatoIndirizzo());
 		Indirizzo newIndirizzo;
 		if (existingIndirizzo != null) {
 
 			newIndirizzo = existingIndirizzo;
 		} else {
 
-			newIndirizzo = new Indirizzo(encodeVia, a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
-					a.getStatoIndirizzo());
+			newIndirizzo = new Indirizzo(encodeVia, a.getCittàIndirizzo(), a.getStatoIndirizzo());
 			indirizzoRepo.save(newIndirizzo);
 		}
 		String encodeNome = a.getNome().replaceAll(" ", "-");
@@ -139,16 +138,15 @@ public class AnnuncioService {
 			found.setPostiLetto(a.getPostiLetto());
 			found.setImage(a.getImage());
 			found.setServizi(a.getServizi());
-			Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndRegioneAndStato(a.getViaIndirizzo(),
-					a.getCittàIndirizzo(), a.getRegioneIndirizzo(), a.getStatoIndirizzo());
+			Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndStato(a.getViaIndirizzo(),
+					a.getCittàIndirizzo(), a.getStatoIndirizzo());
 			Indirizzo newIndirizzo;
 			if (existingIndirizzo != null) {
 
 				newIndirizzo = existingIndirizzo;
 			} else {
 
-				newIndirizzo = new Indirizzo(a.getViaIndirizzo(), a.getCittàIndirizzo(), a.getRegioneIndirizzo(),
-						a.getStatoIndirizzo());
+				newIndirizzo = new Indirizzo(a.getViaIndirizzo(), a.getCittàIndirizzo(), a.getStatoIndirizzo());
 				indirizzoRepo.save(newIndirizzo);
 			}
 			found.setIndirizzo(newIndirizzo);

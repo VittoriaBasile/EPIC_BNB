@@ -3,7 +3,7 @@ package EPICODE.EPIC_BNB.entities;
 import java.time.LocalDate;
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,10 +30,10 @@ public class Prenotazione {
 	private LocalDate dataFine;
 	private int numeroOspiti;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonBackReference
+	@JsonManagedReference
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonBackReference
+	@JsonManagedReference
 	private Annuncio annuncio;
 	private double prezzo;
 

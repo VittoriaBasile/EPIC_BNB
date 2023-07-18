@@ -27,17 +27,15 @@ public class Indirizzo {
 	private UUID id;
 	private String via;
 	private String città;
-	private String regione;
 	private String stato;
 	@OneToMany(mappedBy = "indirizzo")
 	@JsonIgnore
 	private List<Annuncio> annunci;
 
-	public Indirizzo(String via, String città, String regione, String stato) {
+	public Indirizzo(String via, String città, String stato) {
 
 		this.via = via;
 		this.città = città;
-		this.regione = regione;
 		this.stato = stato;
 
 	}

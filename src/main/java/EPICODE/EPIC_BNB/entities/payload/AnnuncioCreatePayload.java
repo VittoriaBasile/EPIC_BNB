@@ -37,7 +37,6 @@ public class AnnuncioCreatePayload {
 	@NotNull(message = "La città è obbligatoria")
 	String cittàIndirizzo;
 	@NotNull(message = "La regione è obbligatoria")
-	String regioneIndirizzo;
-	@NotNull(message = "Lo Stato è obbligatorio")
+
 	String statoIndirizzo;
 }

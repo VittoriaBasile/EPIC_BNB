@@ -29,7 +29,7 @@ import EPICODE.EPIC_BNB.services.UsersService;
 
 @RestController
 @RequestMapping("/prenotazioni")
-@PreAuthorize("hasAuthority('USER')")
+@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 public class PrenotazioneController {
 	@Autowired
 	PrenotazioneService prenotazioneService;
@@ -48,7 +48,7 @@ public class PrenotazioneController {
 
 //TESTATA
 	@GetMapping("/me")
-	@PreAuthorize("hasAuthority('USER')")
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 	public List<Prenotazione> getPrenotazioniPerUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
@@ -73,7 +73,7 @@ public class PrenotazioneController {
 
 	// TESTATA
 	@DeleteMapping("/me/{prenotazioneId}")
-	@PreAuthorize("hasAnyAuthority('USER')")
+	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteUser(@PathVariable UUID prenotazioneId) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

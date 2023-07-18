@@ -41,7 +41,7 @@ public class Annuncio {
 	@Column(length = 700)
 	private String googleMaps;
 	@ManyToOne
-	// @JsonIgnore
+
 	private User user;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Indirizzo indirizzo;
