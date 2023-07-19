@@ -130,16 +130,19 @@ public class AnnuncioService {
 		if (found == null) {
 			throw new NotFoundException("Nessun annuncio trovato");
 		} else {
+			String encodeNome = a.getNome().replaceAll(" ", "-");
+			String encodeVia = a.getViaIndirizzo().replaceAll(" ", "-");
+
 			found.setId(id);
-			found.setNome(a.getNome());
+			found.setNome(encodeNome);
 			found.setDescrizione(a.getDescrizione());
 			found.setPrezzo(a.getPrezzo());
 			found.setTipologia(a.getTipologia());
 			found.setPostiLetto(a.getPostiLetto());
 			found.setImage(a.getImage());
 			found.setServizi(a.getServizi());
-			Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndStato(a.getViaIndirizzo(),
-					a.getCittàIndirizzo(), a.getStatoIndirizzo());
+			Indirizzo existingIndirizzo = indirizzoRepo.findByViaAndCittàAndStato(encodeVia, a.getCittàIndirizzo(),
+					a.getStatoIndirizzo());
 			Indirizzo newIndirizzo;
 			if (existingIndirizzo != null) {
 

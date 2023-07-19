@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -45,14 +48,17 @@ public class Annuncio {
 	private User user;
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	private Indirizzo indirizzo;
-	@OneToMany(mappedBy = "annuncio")
+	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Prenotazione> prenotazioni;
-	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Commento> commenti;
-	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "annuncio", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Valutazione> valutazioni;
 
 	public Annuncio(String nome, String descrizione, double prezzo, LocalDate dataInserimento, TipoAlloggio tipologia,
