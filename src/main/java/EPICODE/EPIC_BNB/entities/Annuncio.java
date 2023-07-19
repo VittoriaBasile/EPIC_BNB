@@ -31,6 +31,7 @@ public class Annuncio {
 	@GeneratedValue
 	private UUID id;
 	private String nome;
+	@Column(length = 3000)
 	private String descrizione;
 	private double prezzo;
 	private LocalDate dataInserimento;
