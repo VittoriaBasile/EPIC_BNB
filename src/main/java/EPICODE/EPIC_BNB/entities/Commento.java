@@ -29,7 +29,7 @@ public class Commento {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User user;
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 
 	private Annuncio annuncio;
 

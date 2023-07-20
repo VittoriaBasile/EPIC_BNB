@@ -12,6 +12,7 @@ import EPICODE.EPIC_BNB.entities.Commento;
 import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.CommentoCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
+import EPICODE.EPIC_BNB.repositories.AnnuncioRepository;
 import EPICODE.EPIC_BNB.repositories.CommentoRepository;
 
 @Service
@@ -22,6 +23,8 @@ public class CommentoService {
 	UsersService usersService;
 	@Autowired
 	AnnuncioService annuncioService;
+	@Autowired
+	AnnuncioRepository annuncioRepo;
 
 	public Commento create(CommentoCreatePayload c) {
 
@@ -70,8 +73,15 @@ public class CommentoService {
 		Commento found = this.findById(id);
 		if (found == null) {
 			throw new NotFoundException("Nessun commento trovato");
-		} else
+		} else {
+			Annuncio annuncio = found.getAnnuncio();
+
+			annuncio.getCommenti().remove(found);
+			found.setAnnuncio(null);
+			annuncioRepo.save(annuncio);
 			commentoRepo.delete(found);
+		}
+
 	}
 
 }

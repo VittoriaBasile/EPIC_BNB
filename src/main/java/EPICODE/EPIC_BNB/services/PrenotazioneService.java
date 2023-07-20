@@ -17,6 +17,7 @@ import EPICODE.EPIC_BNB.entities.User;
 import EPICODE.EPIC_BNB.entities.payload.PrenotazioneCreatePayload;
 import EPICODE.EPIC_BNB.exceptions.BadRequestException;
 import EPICODE.EPIC_BNB.exceptions.NotFoundException;
+import EPICODE.EPIC_BNB.repositories.AnnuncioRepository;
 import EPICODE.EPIC_BNB.repositories.PrenotazioneRepository;
 
 @Service
@@ -27,6 +28,8 @@ public class PrenotazioneService {
 	UsersService usersService;
 	@Autowired
 	AnnuncioService annuncioService;
+	@Autowired
+	AnnuncioRepository annuncioRepo;
 
 	public Prenotazione create(PrenotazioneCreatePayload p) {
 		User user = usersService.findByEmail(p.getUserEmail());
@@ -98,7 +101,17 @@ public class PrenotazioneService {
 
 	public void findByIdAndDelete(UUID id) {
 		Prenotazione found = this.findById(id);
-		prenotazioneRepo.delete(found);
+		if (found == null) {
+			throw new NotFoundException("Nessuna prenotazione trovata");
+		} else {
+			Annuncio annuncio = found.getAnnuncio();
+
+			annuncio.getPrenotazioni().remove(found);
+			found.setAnnuncio(null);
+			annuncioRepo.save(annuncio);
+			prenotazioneRepo.delete(found);
+		}
+
 	}
 
 }

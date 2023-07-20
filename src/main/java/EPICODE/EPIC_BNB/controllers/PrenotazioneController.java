@@ -1,6 +1,5 @@
 package EPICODE.EPIC_BNB.controllers;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,14 +75,6 @@ public class PrenotazioneController {
 	@PreAuthorize("hasAnyAuthority('USER','ADMIN')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteUser(@PathVariable UUID prenotazioneId) {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String username = authentication.getName();
-		User user = usersService.findByUsername(username);
-		Prenotazione prenotazione = prenotazioneService.findByIdAndUser(prenotazioneId, user);
-		if (prenotazione.getDataInizio().minusDays(2).isAfter(LocalDate.now())
-				|| prenotazione.getDataInizio().minusDays(2).isEqual(LocalDate.now())) {
-			prenotazione.setPrezzo(prenotazione.getPrezzo() * 30 / 100);
-		}
 
 		prenotazioneService.findByIdAndDelete(prenotazioneId);
 	}
