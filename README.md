@@ -66,7 +66,7 @@ Una volta avviato il server, è possibile visualizzare la documentazione delle R
 
 ## Repository del Front-end
 
-Per il front-end di Epic BnB, ho utilizzato
+Per il front-end di Epic BnB ho utilizzato
 
 🖥[repository-frontend](https://github.com/VittoriaBasile/progetto-finale-front-end)🖥
 
