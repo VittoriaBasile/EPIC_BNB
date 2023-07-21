@@ -21,6 +21,7 @@ Prima di procedere all'installazione e all'avvio del backend di Epic BnB, assicu
 
 1. Clona il repository del backend da GitHub:
 
+https://github.com/VittoriaBasile/EPIC_BNB.git
 
 2. Importa il progetto in Eclipse:
 
@@ -57,3 +58,8 @@ ADMIN_USERNAME=username
 
 ADMIN_EMAIL=email
 ADMIN_PASSWORD=password
+## Documentazione Rest API
+
+Una volta avviato il server, è possibile visualizzare la documentazione delle REST API utilizzando Swagger. Accedi al seguente URL nel tuo browser:
+
+
