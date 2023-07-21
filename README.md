@@ -12,9 +12,8 @@ Benvenuti nel backend di Epic BnB, il sistema di gestione per il sito di annunci
 
 Prima di procedere all'installazione e all'avvio del backend di Epic BnB, assicurati di avere installato quanto segue:
 
-- [Nome del linguaggio di programmazione] [Versione] (link al sito ufficiale per il download)
-- [Nome del database] [Versione] (link al sito ufficiale per il download)
-- [Altre dipendenze o software necessari]
+-**Java Development Kit (JDK)** - Versione 8 o superiore.
+-**PostgreSQL** - Un database PostgreSQL in cui verranno memorizzati utenti,annunci,prenotazioni e commenti.
 
 ## Installazione
 
