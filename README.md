@@ -62,4 +62,4 @@ ADMIN_PASSWORD=password
 
 Una volta avviato il server, è possibile visualizzare la documentazione delle REST API utilizzando Swagger. Accedi al seguente URL nel tuo browser:
 
-
+[Documentazione Swagger delle Rest API](http://localhost:3001/swagger-ui/index.html)
