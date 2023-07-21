@@ -63,3 +63,20 @@ ADMIN_PASSWORD=password
 Una volta avviato il server, è possibile visualizzare la documentazione delle REST API utilizzando Swagger. Accedi al seguente URL nel tuo browser:
 
 [Documentazione Swagger delle Rest API](http://localhost:3001/swagger-ui/index.html)
+
+## Repository del Front-end
+
+Per il front-end di Epic BnB, ho utilizzato
+
+🖥🔙[repository-frontend](https://github.com/VittoriaBasile/EPIC_BNB)🔚🖥
+
+
+## Contattami
+
+Se hai domande, suggerimenti, o hai bisogno di assistenza riguardo a Epic BnB, non esitare a contattarmi!
+
+📧 Email: **vichy.basile@gmail.com**
+
+LinkedIn : **Vittoria Basile**
+
+GitHub : **VittoriaBasile**
