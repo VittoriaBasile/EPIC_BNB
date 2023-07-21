@@ -34,17 +34,26 @@ Prima di procedere all'installazione e all'avvio del backend di Epic BnB, assicu
    Creare un file env.properties in cui inserire i tuoi dati(ricorda si inserire il file in gitignore)
 
 URL=postgresql://numero porta database/nome database
+
 PG_USERNAME=username
+
 PG_PASSWORD=password
+
 PG_DB=nome database
 
 PORT=numero porta backend
 
 JWT_SECRET=numero segreto
+
 JWT_EXPIRATION=giorni scadenza token
+
 BCRYPT_SECRET=stringa segreta 
+
 ADMIN_NOME=nome
+
 ADMIN_COGNOME=cognome
+
 ADMIN_USERNAME=username
+
 ADMIN_EMAIL=email
 ADMIN_PASSWORD=password
