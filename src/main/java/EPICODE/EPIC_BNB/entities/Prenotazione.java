@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,7 +30,7 @@ public class Prenotazione {
 	private LocalDate dataFine;
 	private int numeroOspiti;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonManagedReference
+	@JsonIgnoreProperties("prenotazione")
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JsonIgnoreProperties("prenotazione")
