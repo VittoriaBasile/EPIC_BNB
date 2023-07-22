@@ -82,7 +82,7 @@ public class AnnuncioService {
 		if (annunciPerTipoAlloggio.isEmpty())
 			throw new NotFoundException("Nessun annuncio trovato di tipo: " + tipo);
 		else
-			return annunciPerTipoAlloggio;
+			return annunciPerTipoAlloggio.stream().sorted(Comparator.comparing(Annuncio::getPrezzo)).toList();
 
 	}
 
