@@ -45,7 +45,7 @@ public class AnnuncioController {
 //TESTATA
 	@GetMapping("")
 	public Page<Annuncio> getAnnunci(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
+			@RequestParam(defaultValue = "100") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(required = false) String nome) {
 		return annuncioService.find(page, size, sortBy);
 	}
