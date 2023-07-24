@@ -13,7 +13,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 public class SwaggerConfiguration {
-	// TODO correggere le info
+
 	@Bean
 	public OpenAPI openAPI() {
 		return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))

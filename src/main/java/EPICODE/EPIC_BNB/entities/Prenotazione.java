@@ -30,10 +30,10 @@ public class Prenotazione {
 	private LocalDate dataFine;
 	private int numeroOspiti;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnoreProperties("prenotazione")
+	@JsonIgnoreProperties("prenotazioni")
 	private User user;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JsonIgnoreProperties("prenotazione")
+	@JsonIgnoreProperties("prenotazioni")
 	private Annuncio annuncio;
 	private double prezzo;
 
