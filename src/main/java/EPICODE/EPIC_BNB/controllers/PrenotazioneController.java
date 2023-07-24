@@ -39,7 +39,7 @@ public class PrenotazioneController {
 	@GetMapping("")
 	@PreAuthorize("hasAuthority('ADMIN')")
 	public Page<Prenotazione> getPrenotazioni(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
+			@RequestParam(defaultValue = "100") int size, @RequestParam(defaultValue = "id") String sortBy) {
 
 		return prenotazioneService.find(page, size, sortBy);
 
